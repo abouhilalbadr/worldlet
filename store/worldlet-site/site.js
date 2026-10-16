@@ -8,6 +8,10 @@ const TIMES = {
   evening: { p: 0.95, e: 0.12 },
   night: { p: 1.3, e: -0.42 },
 };
+// The sun slider runs 0-300: each hundred is the stretch between two of the times above.
+const STOPS = ['morning', 'day', 'evening', 'night'];
+const sunRange = document.getElementById('sunRange');
+const sunOut = document.getElementById('sunOut');
 const WIND = { clear: 8, rain: 18, snow: 10, storm: 38 };
 
 function timeNow() {
@@ -22,16 +26,36 @@ function seasonNow() {
   return ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'][m];
 }
 
-const state = { scene: 'island', time: timeNow(), weather: 'clear' };
+const state = { scene: 'island', sun: STOPS.indexOf(timeNow()) * 100, weather: 'clear' };
 let world = null, presets = null, checkScene = null;
 
 function press(attr, value) {
   document.querySelectorAll(`.dock [data-${attr}]`).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset[attr] === value)));
 }
 
+function sunAt(v) {
+  const i = Math.min(2, Math.floor(v / 100)), t = v / 100 - i;
+  const a = TIMES[STOPS[i]], b = TIMES[STOPS[i + 1]];
+  return { p: a.p + (b.p - a.p) * t, e: a.e + (b.e - a.e) * t };
+}
+
+function showSun() {
+  const name = STOPS[Math.round(state.sun / 100)];
+  const label = name[0].toUpperCase() + name.slice(1);
+  sunRange.value = state.sun;
+  sunOut.textContent = label;
+  sunRange.setAttribute('aria-valuetext', label);
+  document.querySelectorAll('.sun-stops [data-time]').forEach((b) => b.classList.toggle('near', b.dataset.time === name));
+}
+
+function applySun(instant = false) {
+  showSun();
+  if (world) world.setSun(sunAt(state.sun), instant);
+}
+
 function applyEnv(instant = false) {
   if (!world) return;
-  world.setSun(TIMES[state.time], instant);
+  applySun(instant);
   world.setWeather(presets[state.weather], WIND[state.weather]);
   world.setSeason(state.weather === 'snow' ? 'winter' : seasonNow());
 }
@@ -71,12 +95,12 @@ async function start() {
     world.controls.enabled = false;
     canvas.style.touchAction = 'pan-y';
   }
-  const frame = () => world.setFrameShift(small.matches ? 0 : 0.17);
+  // Push the set down on wide screens so it sits below the headline and above the controls.
+  const frame = () => world.setFrameShift(0, small.matches ? 0 : 0.14);
   frame();
   small.addEventListener('change', frame);
 
   world.onNightChange = (n) => hero.classList.toggle('night', n);
-  press('time', state.time);
   await loadScene(state.scene);
   applyEnv(true);
 
@@ -85,8 +109,9 @@ async function start() {
 }
 
 document.querySelectorAll('.dock [data-scene]').forEach((b) => b.addEventListener('click', () => loadScene(b.dataset.scene)));
+sunRange.addEventListener('input', () => { state.sun = Number(sunRange.value); applySun(); });
 document.querySelectorAll('.dock [data-time]').forEach((b) =>
-  b.addEventListener('click', () => { state.time = b.dataset.time; press('time', state.time); applyEnv(); })
+  b.addEventListener('click', () => { state.sun = STOPS.indexOf(b.dataset.time) * 100; applySun(); })
 );
 document.querySelectorAll('.dock [data-weather]').forEach((b) =>
   b.addEventListener('click', () => { state.weather = b.dataset.weather; press('weather', state.weather); applyEnv(); })
@@ -120,4 +145,5 @@ document.getElementById('loadRiad').addEventListener('click', async () => {
   }
 });
 
+showSun();
 start();

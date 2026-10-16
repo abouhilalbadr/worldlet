@@ -68,18 +68,54 @@ code { font: 500 0.88em var(--mono); background: var(--amber-soft); padding: 1px
 .nav-links a { text-decoration: none; opacity: 0.85; }
 .nav-links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
 
-.hero-copy { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-56%); width: min(500px, 40vw); border-radius: 24px; padding: 30px 32px; display: grid; gap: 16px; }
-.cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+/* The headline runs wide across the sky; the scene is framed lower so the two never overlap. */
+.hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 58%; z-index: -1; pointer-events: none; background: linear-gradient(rgba(246, 241, 231, 0.5), rgba(246, 241, 231, 0)); }
+.hero.night::before { background: linear-gradient(rgba(10, 16, 32, 0.55), rgba(10, 16, 32, 0)); }
+.hero-copy { position: absolute; left: 0; right: 0; top: clamp(96px, 13svh, 150px); margin: 0 auto; width: min(1240px, calc(100% - 2 * var(--gutter))); display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); column-gap: clamp(32px, 5vw, 80px); row-gap: 14px; align-items: end; pointer-events: none; }
+.hero-copy > * { pointer-events: auto; }
+.hero-title { display: grid; gap: 14px; }
+.hero h1 { font-size: clamp(44px, 5.2vw, 76px); line-height: 0.98; letter-spacing: -0.03em; text-wrap: balance; }
+.hero-side { display: grid; gap: 18px; padding-bottom: 6px; }
+.hero .lede { font-size: 18px; max-width: 40ch; opacity: 0.88; }
+.cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
 
-.dock { position: absolute; left: 50%; bottom: max(22px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); border-radius: 18px; padding: 8px; display: grid; gap: 6px; max-width: calc(100% - 40px); }
-.dock-row { display: flex; gap: 4px; justify-content: center; }
-.dock-small { gap: 14px; }
-.dock-small > div { display: flex; gap: 2px; }
-.dock button { border: 0; background: transparent; padding: 8px 13px; border-radius: 10px; font-weight: 800; font-size: 14px; white-space: nowrap; opacity: 0.8; }
-.dock-small button { padding: 5px 10px; font-size: 12.5px; }
-.dock button:hover { opacity: 1; background: rgba(127, 127, 127, 0.14); }
-.dock button[aria-pressed="true"] { opacity: 1; background: #1b2a3a; color: #fff; }
-.hero.night .dock button[aria-pressed="true"] { background: #f4c47f; color: #1a2232; }
+/* Try-it controls: scene pictures, a sun slider and weather icons in one glass bar. */
+.dock-wrap { position: absolute; left: 50%; bottom: max(22px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: grid; justify-items: center; gap: 10px; width: max-content; max-width: calc(100% - 40px); }
+.dock-hint { font-size: 13px; padding: 4px 14px; border-radius: 999px; box-shadow: none; }
+.hero .dock-hint { opacity: 1; }
+.dock { border-radius: 20px; padding: 10px; display: flex; align-items: stretch; gap: 10px; }
+.dock-part { display: flex; gap: 6px; align-items: center; }
+.dock-part + .dock-part { border-left: 1px solid rgba(127, 127, 127, 0.22); padding-left: 10px; }
+.dock button { border: 0; background: transparent; padding: 0; }
+.dock-scenes button { display: grid; gap: 4px; justify-items: center; padding: 4px; border-radius: 12px; font-size: 12px; font-weight: 800; opacity: 0.78; transition: transform 0.15s, background 0.15s, opacity 0.15s; }
+.dock-scenes img { width: 72px; height: 50px; object-fit: cover; border-radius: 9px; box-shadow: 0 0 0 1px rgba(27, 42, 58, 0.1); }
+.dock-scenes button:hover { opacity: 1; transform: translateY(-2px); }
+.dock-scenes button[aria-pressed="true"] { opacity: 1; background: rgba(255, 255, 255, 0.75); box-shadow: 0 6px 16px rgba(20, 40, 70, 0.16); transform: translateY(-2px); }
+.dock-scenes button[aria-pressed="true"] img { box-shadow: 0 0 0 2px #d9913a; }
+.hero.night .dock-scenes button[aria-pressed="true"] { background: rgba(255, 255, 255, 0.12); }
+.hero.night .dock-scenes button[aria-pressed="true"] img { box-shadow: 0 0 0 2px #f4c47f; }
+
+.dock-time { flex-direction: column; align-items: stretch; justify-content: center; gap: 6px; width: 230px; padding: 0 4px; }
+.dock-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; opacity: 0.75; }
+.dock-label output { opacity: 1; color: #a8641a; }
+.hero.night .dock-label output { color: #f4c47f; }
+.sun-track { display: flex; align-items: center; gap: 8px; }
+.sun-track svg, .dock-weather svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sun-track svg:first-child { color: #c97f25; }
+#sunRange { flex: 1; min-width: 0; height: 22px; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; cursor: pointer; }
+#sunRange::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, #f6c98a, #8cc4e8 33%, #f08a4b 66%, #1b2a4a); }
+#sunRange::-moz-range-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, #f6c98a, #8cc4e8 33%, #f08a4b 66%, #1b2a4a); }
+#sunRange::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -7px; border-radius: 50%; background: #fff; border: 2px solid #1b2a3a; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); }
+#sunRange::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 2px solid #1b2a3a; }
+.sun-stops { display: flex; justify-content: space-between; padding: 0 22px 0 20px; }
+.sun-stops button { font-size: 11px; font-weight: 700; opacity: 0.6; padding: 2px 0; }
+.sun-stops button:hover, .sun-stops button.near { opacity: 1; }
+
+.dock-weather button { display: grid; justify-items: center; gap: 3px; min-width: 50px; padding: 8px 4px 6px; border-radius: 12px; font-size: 11.5px; font-weight: 800; opacity: 0.75; }
+.dock-weather svg { width: 22px; height: 22px; }
+.dock-weather button:hover { opacity: 1; background: rgba(127, 127, 127, 0.14); }
+.dock-weather button[aria-pressed="true"] { opacity: 1; background: #1b2a3a; color: #fff; }
+.hero.night .dock-weather button[aria-pressed="true"] { background: #f4c47f; color: #1a2232; }
 
 /* ---------- bands ---------- */
 .band { padding-block: clamp(64px, 9vw, 120px); }
@@ -171,12 +207,21 @@ button.scene-card:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var
 
 /* ---------- large screens ---------- */
 /* Scale the text and layout (not the 3D canvas) so the page keeps its proportions on big monitors. */
-@media (min-width: 1680px) { main, .footer, .nav, .hero-copy, .dock { zoom: 1.18; } }
-@media (min-width: 2100px) { main, .footer, .nav, .hero-copy, .dock { zoom: 1.4; } }
-@media (min-width: 2800px) { main, .footer, .nav, .hero-copy, .dock { zoom: 1.75; } }
+@media (min-width: 1680px) { main, .footer, .nav, .hero-copy, .dock-wrap { zoom: 1.18; } }
+@media (min-width: 2100px) { main, .footer, .nav, .hero-copy, .dock-wrap { zoom: 1.4; } }
+@media (min-width: 2800px) { main, .footer, .nav, .hero-copy, .dock-wrap { zoom: 1.75; } }
 @media (max-width: 900px) {
   .doc-grid { grid-template-columns: minmax(0, 1fr); }
   .toc { position: static; }
+}
+
+/* Mid-size screens: smaller pictures so the controls stay on one row below the scene. */
+@media (min-width: 901px) and (max-width: 1180px) {
+  .dock-scenes img { width: 54px; height: 38px; }
+  .dock-time { width: 200px; }
+  .sun-stops { padding: 0; }
+  .sun-stops button { font-size: 10.5px; }
+  .dock-weather button { min-width: 44px; }
 }
 
 /* ---------- small screens ---------- */
@@ -185,13 +230,19 @@ button.scene-card:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var
   .nav .btn-small { margin-left: auto; }
   /* Phones stack the hero: copy, then the live scene in its own area, then the controls. */
   .hero { height: auto; display: flex; flex-direction: column; padding: 84px 0 18px; background: linear-gradient(#d7ebf6, #a9d2ea); }
+  .hero::before { display: none; }
   .hero.night { background: linear-gradient(#141f38, #1d2b4a); }
-  .hero-copy { order: 1; position: relative; left: auto; top: auto; transform: none; width: auto; margin: 0 16px; padding: 22px; gap: 12px; }
-  .hero-copy .hint { display: none; }
+  .hero-copy { order: 1; position: relative; top: auto; width: auto; margin: 0 16px; grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
+  .hero h1 { font-size: clamp(38px, 10vw, 56px); }
   .hero-canvas { order: 2; position: relative; inset: auto; height: 360px; z-index: 0; }
-  .dock { order: 3; position: relative; left: auto; bottom: auto; transform: none; margin: 0 16px; max-width: none; }
-  .dock-row { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
-  .dock-small { flex-direction: column; gap: 4px; }
+  .dock-wrap { order: 3; position: relative; left: auto; bottom: auto; transform: none; width: auto; max-width: none; margin: 0 16px; }
+  .dock-hint { display: none; }
+  .dock { flex-direction: column; width: 100%; }
+  .dock-part + .dock-part { border-left: 0; padding-left: 0; border-top: 1px solid rgba(127, 127, 127, 0.22); padding-top: 10px; }
+  .dock-scenes { overflow-x: auto; scrollbar-width: none; justify-content: space-between; }
+  .dock-time { width: auto; }
+  .dock-weather { justify-content: space-between; }
+  .dock-weather button { flex: 1; }
   .split, .split-rev { grid-template-columns: minmax(0, 1fr); }
   .scene-grid, .trio, .get-grid { grid-template-columns: minmax(0, 1fr); }
   .scene-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

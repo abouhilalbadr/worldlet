@@ -285,8 +285,9 @@ export class World {
     if (!on) this.clock.getDelta();
   }
 
-  setFrameShift(fraction) {
+  setFrameShift(fraction, down = 0) {
     this.frameShift = fraction;
+    this.frameShiftY = down;
     this.resize();
   }
 
@@ -310,8 +311,8 @@ export class World {
     this.camera.aspect = w / h;
     // keep the set framed on narrow screens
     this.camera.fov = w / h < 1.2 ? 48 : 34;
-    // Shift the view sideways (e.g. to keep the set centred beside the welcome panel).
-    if (this.frameShift) this.camera.setViewOffset(w, h, -w * this.frameShift, 0, w, h);
+    // Shift the view sideways or down (e.g. to keep the set centred beside the welcome panel or below a headline).
+    if (this.frameShift || this.frameShiftY) this.camera.setViewOffset(w, h, -w * this.frameShift, -h * (this.frameShiftY || 0), w, h);
     else this.camera.clearViewOffset();
     this.camera.updateProjectionMatrix();
   }
