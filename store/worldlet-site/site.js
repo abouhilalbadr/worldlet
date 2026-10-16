@@ -99,10 +99,8 @@ async function start() {
   setSpin(!reduced.matches);
   // The page should scroll, not zoom, when the wheel or a finger passes over the hero.
   world.controls.enableZoom = false;
-  if (coarse.matches) {
-    world.controls.enabled = false;
-    canvas.style.touchAction = 'pan-y';
-  }
+  // On touch screens a sideways swipe turns the scene and an up-down swipe still scrolls the page.
+  if (coarse.matches) canvas.style.touchAction = 'pan-y';
   // Push the set down on wide screens so it sits below the headline and above the controls.
   const frame = () => world.setFrameShift(0, small.matches ? 0 : 0.14);
   frame();
