@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Worldlet privacy policy</title>
+<meta name="description" content="How the Worldlet new-tab extension handles your data." />
+<style>
+  :root {
+    --bg: #f6f1e7; --card: #fffdf8; --ink: #1b2a3a; --muted: #5a6a7b; --line: rgba(27, 42, 58, 0.1); --accent: #d9913a;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #10192b; --card: #17233a; --ink: #eef2f8; --muted: #a7b4c6; --line: rgba(255, 255, 255, 0.1); --accent: #f4c47f; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 20px 64px; }
+  header { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  header svg { width: 30px; height: 30px; }
+  header b { letter-spacing: 0.14em; font-size: 15px; }
+  header span { letter-spacing: 0.14em; font-size: 15px; font-weight: 400; }
+  h1 { font-size: 32px; line-height: 1.2; margin: 0 0 6px; }
+  .date { color: var(--muted); margin: 0 0 28px; font-size: 14px; }
+  .short { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 0; padding: 16px 20px; margin-bottom: 32px; }
+  .short p { margin: 0; }
+  h2 { font-size: 20px; margin: 36px 0 8px; }
+  ul { padding-left: 22px; }
+  li { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+  .wrap { overflow-x: auto; }
+  code { font-size: 14px; }
+  a { color: inherit; text-underline-offset: 3px; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M3.4 16.2 8.6 10l3 3.4L15.2 8.6l5.4 7.6"/><circle cx="16.6" cy="6.3" r="1.3" fill="currentColor" stroke="none"/></svg>
+    <div><b>WORLD</b><span>LET</span></div>
+  </header>
+
+  <h1>Privacy policy</h1>
+  <p class="date">Effective 16 October 2026</p>
+
+  <div class="short">
+    <p><strong>The short version:</strong> Worldlet has no account, no server, no analytics and no ads. Everything you set up stays in your browser. The only things that leave it are the few requests needed to show the weather, listed below.</p>
+  </div>
+
+  <h2>What stays in your browser</h2>
+  <p>Your settings, quick links, name, logo, background photo, AI scene, tasks, notes and timer are saved with Chrome's own extension storage. The developer never receives them.</p>
+  <ul>
+    <li>Settings and quick links use <code>chrome.storage.sync</code>. If you have Chrome sync turned on, Google copies them to your other computers as part of your Chrome profile.</li>
+    <li>Everything else (logo, photo, AI scene, tasks, notes, timer) uses <code>chrome.storage.local</code> and stays on this computer.</li>
+    <li>Site icons for your quick links come from Chrome's built-in icon cache. Worldlet does not download them.</li>
+  </ul>
+
+  <h2>What leaves your browser, and why</h2>
+  <div class="wrap">
+  <table>
+    <thead><tr><th>Sent to</th><th>What</th><th>When and why</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><a href="https://open-meteo.com/">Open-Meteo</a><br><code>api.open-meteo.com</code></td>
+        <td>The latitude and longitude of your weather location, rounded to about 1&nbsp;km</td>
+        <td>Each time the weather refreshes, to get the current conditions and forecast.</td>
+      </tr>
+      <tr>
+        <td><a href="https://open-meteo.com/">Open-Meteo</a><br><code>geocoding-api.open-meteo.com</code></td>
+        <td>The city name you type</td>
+        <td>Only when you search for a city, to find matching places.</td>
+      </tr>
+      <tr>
+        <td><a href="https://www.bigdatacloud.com/">BigDataCloud</a><br><code>api.bigdatacloud.net</code></td>
+        <td>Your latitude and longitude, rounded to about 1&nbsp;km</td>
+        <td>Only after you choose "Use my location", to turn your position into a city name.</td>
+      </tr>
+      <tr>
+        <td>The search engine you pick</td>
+        <td>What you type in the search box</td>
+        <td>Only when you press Enter. You are taken to that search engine's results page.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Your position is only read if you choose "Use my location" and allow it in Chrome's prompt. You can always search for a city instead. These services receive requests directly from your browser, so they also see your IP address, as with any website. Their own policies apply: <a href="https://open-meteo.com/en/terms">Open-Meteo terms and privacy</a> and <a href="https://www.bigdatacloud.com/privacy-policy">BigDataCloud privacy policy</a>.</p>
+
+  <h2>What Worldlet never does</h2>
+  <ul>
+    <li>It does not collect, sell or share your personal data, and the developer has no copy of it.</li>
+    <li>It does not track your browsing, read the pages you visit, or use analytics or advertising.</li>
+    <li>It does not run code downloaded from the internet. AI scenes are plain data files that Worldlet checks and draws with its own code.</li>
+  </ul>
+  <p>The use of information received from Chrome APIs adheres to the <a href="https://developer.chrome.com/docs/webstore/program-policies/">Chrome Web Store User Data Policy</a>, including the Limited Use requirements.</p>
+
+  <h2>Removing your data</h2>
+  <p>Removing Worldlet from Chrome deletes everything it stored. To keep a copy first, use <em>Settings → Your setup → Back up</em>.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy: <a href="mailto:abouhilal.badr@gmail.com">abouhilal.badr@gmail.com</a></p>
+
+  <footer>Worldlet is an independent project. Weather data by <a href="https://open-meteo.com/">Open-Meteo.com</a> (CC BY 4.0).</footer>
+</main>
+</body>
+</html>

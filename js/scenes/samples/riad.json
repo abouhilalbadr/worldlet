@@ -1,0 +1,72 @@
+{
+  "worldlet": 1,
+  "name": "Riad courtyard",
+  "ground": { "type": "plain", "color": "#c9a57a", "radius": 11 },
+  "objects": [
+    { "shape": "box", "size": [12, 0.12, 12], "position": [0, 0.56, -1], "color": "#e9dcc4" },
+    { "shape": "box", "size": [11.6, 0.02, 0.18], "position": [0, 0.63, -1], "color": "#2f7d78" },
+    { "shape": "box", "size": [0.18, 0.02, 11.6], "position": [0, 0.63, -1], "color": "#2f7d78" },
+
+    { "shape": "box", "size": [12.4, 3.4, 0.6], "position": [0, 2.2, -7.2], "color": "#d98f63" },
+    { "shape": "box", "size": [0.6, 3.4, 12.4], "position": [-6.2, 2.2, -1], "color": "#d98f63" },
+    { "shape": "box", "size": [0.6, 3.4, 12.4], "position": [6.2, 2.2, -1], "color": "#d98f63" },
+    { "shape": "box", "size": [12.8, 0.25, 0.8], "position": [0, 4.0, -7.2], "color": "#b8714a" },
+    { "shape": "box", "size": [0.8, 0.25, 12.8], "position": [-6.2, 4.0, -1], "color": "#b8714a" },
+    { "shape": "box", "size": [0.8, 0.25, 12.8], "position": [6.2, 4.0, -1], "color": "#b8714a" },
+
+    { "shape": "group", "position": [0, 0.5, -6.85], "children": [
+      { "shape": "box", "size": [1.4, 2.0, 0.1], "position": [0, 1.0, 0], "color": "#2f5f7a" },
+      { "shape": "cylinder", "radius": 0.7, "height": 0.1, "position": [0, 2.0, 0], "rotation": [90, 0, 0], "color": "#2f5f7a" }
+    ] },
+    { "shape": "group", "position": [-3.6, 0.5, -6.85], "children": [
+      { "shape": "box", "size": [0.8, 1.0, 0.1], "position": [0, 1.9, 0], "color": "window" }
+    ] },
+    { "shape": "group", "position": [3.6, 0.5, -6.85], "children": [
+      { "shape": "box", "size": [0.8, 1.0, 0.1], "position": [0, 1.9, 0], "color": "window" }
+    ] },
+
+    { "shape": "cylinder", "radius": 1.6, "radiusTop": 1.7, "height": 0.5, "position": [0, 0.85, -1], "color": "#f2ece0" },
+    { "shape": "cylinder", "radius": 1.45, "height": 0.08, "position": [0, 1.08, -1], "color": "#5fb7c9", "animate": { "type": "pulse", "speed": 0.6, "amount": 0.3 } },
+    { "shape": "cylinder", "radius": 0.18, "height": 1.2, "position": [0, 1.6, -1], "color": "#f2ece0" },
+    { "shape": "sphere", "radius": 0.32, "position": [0, 2.3, -1], "color": "#7fd0de", "animate": { "type": "bob", "speed": 1.2, "amount": 0.4 } },
+    { "shape": "box", "size": [0.5, 0.5, 0.5], "position": [0, 0.82, -1], "color": "#2f7d78", "repeat": { "pattern": "ring", "count": 12, "radius": 1.85 } },
+
+    { "shape": "group", "position": [-3.6, 0.5, -3.8], "children": [
+      { "shape": "box", "size": [1.0, 0.5, 1.0], "position": [0, 0.25, 0], "color": "#2f7d78" },
+      { "shape": "cylinder", "radius": 0.12, "height": 1.4, "position": [0, 1.1, 0], "color": "#6e4b32" },
+      { "shape": "sphere", "radius": 0.9, "position": [0, 2.1, 0], "color": "#4f8f3a", "animate": { "type": "sway", "speed": 0.8 } },
+      { "shape": "sphere", "radius": 0.12, "position": [0.5, 2.2, 0.55], "color": "#f39a2b" },
+      { "shape": "sphere", "radius": 0.12, "position": [-0.45, 1.9, 0.6], "color": "#f39a2b" },
+      { "shape": "sphere", "radius": 0.12, "position": [0.2, 2.6, -0.6], "color": "#f39a2b" }
+    ] },
+    { "shape": "group", "position": [3.6, 0.5, -3.8], "children": [
+      { "shape": "box", "size": [1.0, 0.5, 1.0], "position": [0, 0.25, 0], "color": "#2f7d78" },
+      { "shape": "cylinder", "radius": 0.12, "height": 1.4, "position": [0, 1.1, 0], "color": "#6e4b32" },
+      { "shape": "sphere", "radius": 0.9, "position": [0, 2.1, 0], "color": "#4f8f3a", "animate": { "type": "sway", "speed": 0.9 } },
+      { "shape": "sphere", "radius": 0.12, "position": [-0.5, 2.3, 0.5], "color": "#f39a2b" },
+      { "shape": "sphere", "radius": 0.12, "position": [0.4, 1.9, 0.6], "color": "#f39a2b" }
+    ] },
+    { "shape": "group", "position": [-3.6, 0.5, 2.2], "children": [
+      { "shape": "box", "size": [1.0, 0.5, 1.0], "position": [0, 0.25, 0], "color": "#2f7d78" },
+      { "shape": "cylinder", "radius": 0.12, "height": 1.4, "position": [0, 1.1, 0], "color": "#6e4b32" },
+      { "shape": "sphere", "radius": 0.9, "position": [0, 2.1, 0], "color": "#4f8f3a", "animate": { "type": "sway", "speed": 0.7 } },
+      { "shape": "sphere", "radius": 0.12, "position": [0.5, 2.0, 0.6], "color": "#f39a2b" }
+    ] },
+    { "shape": "group", "position": [3.6, 0.5, 2.2], "children": [
+      { "shape": "box", "size": [1.0, 0.5, 1.0], "position": [0, 0.25, 0], "color": "#2f7d78" },
+      { "shape": "cylinder", "radius": 0.12, "height": 1.4, "position": [0, 1.1, 0], "color": "#6e4b32" },
+      { "shape": "sphere", "radius": 0.9, "position": [0, 2.1, 0], "color": "#4f8f3a", "animate": { "type": "sway", "speed": 1.0 } },
+      { "shape": "sphere", "radius": 0.12, "position": [-0.4, 2.4, 0.6], "color": "#f39a2b" }
+    ] },
+
+    { "shape": "group", "position": [0, 0.5, -1], "repeat": { "pattern": "ring", "count": 6, "radius": 5.2 }, "children": [
+      { "shape": "cylinder", "radius": 0.03, "height": 1.0, "position": [0, 3.1, 0], "color": "#3a2a20" },
+      { "shape": "pyramid", "radius": 0.24, "height": 0.45, "position": [0, 2.45, 0], "color": "#b8963f", "glow": true, "animate": { "type": "sway", "speed": 0.6, "amount": 2 } }
+    ] },
+
+    { "shape": "box", "size": [2.2, 0.35, 0.8], "position": [-1.6, 0.8, 3.6], "color": "#8c3b3b" },
+    { "shape": "box", "size": [2.2, 0.35, 0.8], "position": [1.6, 0.8, 3.6], "color": "#8c3b3b" },
+    { "shape": "box", "size": [0.5, 0.2, 0.5], "position": [0, 0.75, 3.6], "color": "#d6a64f" },
+    { "shape": "cone", "radius": 0.18, "height": 0.35, "position": [0, 1.02, 3.6], "color": "#c94f3a" }
+  ]
+}

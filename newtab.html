@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>New Tab</title>
+  <link rel="icon" href="icons/icon48.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="scene" aria-label="Animated 3D island showing the current weather"></canvas>
+  <div class="fallback-bg" id="fallbackBg"></div>
+  <div class="photo-bg" id="photoBg" hidden></div>
+
+  <div class="ui" id="ui">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand"><img class="brand-logo" id="brandCustom" alt="Worldlet" hidden /><span class="brand-default" id="brandDefault"><svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M3.4 16.2 8.6 10l3 3.4L15.2 8.6l5.4 7.6"/><circle cx="16.6" cy="6.3" r="1.3" fill="currentColor" stroke="none"/></svg><span class="brand-word"><b>WORLD</b>LET</span></span></div>
+
+      <form class="search glass hideable" id="searchForm" autocomplete="off">
+        <span class="search-ico" data-icon="search"></span>
+        <input id="searchInput" type="text" placeholder="Search the web or type a URL" spellcheck="false" />
+        <kbd>/</kbd>
+      </form>
+
+      <nav class="tools-btns">
+        <button class="pill glass" id="btnLocation" title="Change location"><span data-icon="search"></span><span id="btnLocationLabel">Location</span></button>
+        <button class="icon-btn glass" id="btnLocate" title="Use my location"><span data-icon="locate"></span></button>
+        <button class="icon-btn glass" id="btnHide" title="Hide panels (H)"><span data-icon="eye"></span></button>
+        <button class="icon-btn glass" id="btnSettings" title="Customize view"><span data-icon="sliders"></span></button>
+      </nav>
+    </header>
+
+    <!-- Left column: time + weather -->
+    <section class="left hideable">
+      <div class="greeting" id="greeting">Good evening</div>
+      <div class="clock" id="clock">--:--</div>
+      <div class="date" id="date"></div>
+
+      <div class="wx-now">
+        <div class="eyebrow">Current weather</div>
+        <div class="city" id="city">—</div>
+        <div class="temp"><span id="temp">--</span><sup>°</sup></div>
+        <div class="cond" id="cond">Loading weather…</div>
+        <div class="hilo" id="hilo"></div>
+        <div class="stats">
+          <div class="stat glass"><span class="stat-l"><i data-icon="wind"></i>Wind</span><b id="wind">–</b><small id="windDir"></small></div>
+          <div class="stat glass"><span class="stat-l"><i data-icon="drop"></i>Rain</span><b id="precip">–</b><small id="precipProb"></small></div>
+          <div class="stat glass"><span class="stat-l"><i data-icon="humidity"></i>Humidity</span><b id="humidity">–</b><small id="sunTimes"></small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right column: links + tools -->
+    <aside class="right hideable">
+      <div class="card glass" id="linksCard">
+        <div class="card-h">
+          <h2>Quick links</h2>
+          <button class="mini" id="btnEditLinks" title="Edit links"><span data-icon="edit"></span><span>Edit</span></button>
+        </div>
+        <div class="links" id="links"></div>
+        <form class="link-form" id="linkForm" hidden>
+          <input id="linkName" placeholder="Name" maxlength="24" required />
+          <input id="linkUrl" placeholder="https://…" required />
+          <div class="row">
+            <button type="button" class="chip" id="linkCancel">Cancel</button>
+            <button type="submit" class="chip on" id="linkSave">Save</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card glass" id="toolsCard">
+        <div class="tabs" role="tablist">
+          <button class="tab on" data-tab="tasks">Tasks <span class="count" id="taskCount"></span></button>
+          <button class="tab" data-tab="notes">Notes</button>
+          <button class="tab" data-tab="timer">Focus</button>
+        </div>
+
+        <div class="tabpane" data-pane="tasks">
+          <form id="taskForm" class="task-form"><input id="taskInput" placeholder="Add a task and press Enter" maxlength="140" /></form>
+          <ul class="tasks" id="tasks"></ul>
+          <button class="linkish" id="clearDone" hidden>Clear completed</button>
+        </div>
+
+        <div class="tabpane" data-pane="notes" hidden>
+          <textarea id="notes" placeholder="Jot something down… (saved automatically)"></textarea>
+        </div>
+
+        <div class="tabpane" data-pane="timer" hidden>
+          <div class="timer">
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="timer-label" id="timerLabel">Focus</div>
+            <div class="row center">
+              <button class="chip" data-preset="25">Focus 25</button>
+              <button class="chip" data-preset="50">Deep 50</button>
+              <button class="chip" data-preset="5">Break 5</button>
+            </div>
+            <div class="row center">
+              <button class="round-btn primary" id="timerStart" title="Start / pause"><span data-icon="play"></span></button>
+              <button class="round-btn" id="timerReset" title="Reset"><span data-icon="reset"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Bottom: forecast -->
+    <footer class="bottom">
+      <div class="forecast hideable" id="forecast"></div>
+      <div class="foot-meta hideable" id="footMeta">Weather by Open-Meteo</div>
+    </footer>
+
+    <button class="pill glass ambience" id="btnSound" title="Ambient sound"><span data-icon="sound"></span><span>Ambience</span></button>
+  </div>
+
+  <!-- Hourly panel -->
+  <div class="panel glass" id="hourlyPanel" hidden>
+    <div class="panel-h">
+      <div><div class="eyebrow">Hourly forecast</div><h3 id="hourlyTitle">Today</h3></div>
+      <button class="icon-btn" data-close="hourlyPanel"><span data-icon="close"></span></button>
+    </div>
+    <div class="seg" id="hourlySeg">
+      <button class="on" data-metric="temp">Temperature</button>
+      <button data-metric="wind">Wind</button>
+      <button data-metric="rain">Rain</button>
+    </div>
+    <div class="chart" id="hourlyChart"></div>
+    <div class="hours" id="hourlyList"></div>
+  </div>
+
+  <!-- Location panel -->
+  <div class="panel glass small" id="locationPanel" hidden>
+    <div class="panel-h">
+      <div><div class="eyebrow">Location</div><h3>Choose a place</h3></div>
+      <button class="icon-btn" data-close="locationPanel"><span data-icon="close"></span></button>
+    </div>
+    <input id="locInput" class="field" placeholder="Search a city…" />
+    <ul class="results" id="locResults"></ul>
+    <button class="chip wide" id="locUseMine"><span data-icon="locate"></span> Use my current location</button>
+  </div>
+
+  <!-- Settings panel -->
+  <div class="panel glass" id="settingsPanel" hidden>
+    <div class="panel-h">
+      <div><div class="eyebrow">Customize</div><h3>View &amp; preferences</h3></div>
+      <button class="icon-btn" data-close="settingsPanel"><span data-icon="close"></span></button>
+    </div>
+    <div class="set-group">
+      <div class="set-l">Scene</div>
+      <div class="chips" data-setting="scene" data-options="island:Island,desert:Desert oasis,cabin:Mountain cabin,zen:Zen garden,camp:Lake camp,photo:Your photo,custom:AI scene"></div>
+
+      <div class="scene-extra" id="photoSet" hidden>
+        <div class="logo-set">
+          <span class="photo-prev" id="photoPreview"></span>
+          <label class="chip" for="setPhoto">Upload photo…</label>
+          <input type="file" id="setPhoto" accept="image/png,image/jpeg,image/webp" hidden />
+        </div>
+        <p class="hint msg" role="alert" id="photoMsg" hidden></p>
+        <label class="slider"><span>Blur</span><input type="range" id="photoBlur" min="0" max="20" step="1" /></label>
+        <label class="slider"><span>Darken</span><input type="range" id="photoDim" min="0" max="70" step="5" /></label>
+      </div>
+
+      <div class="scene-extra" id="aiSet" hidden>
+        <ol class="ai-steps">
+          <li><button class="chip" id="aiCopy">Copy prompt</button> and paste it into ChatGPT, Claude or Gemini. Replace the last line with the scene you want.</li>
+          <li>Paste the assistant's whole reply here, or upload it as a file.</li>
+        </ol>
+        <textarea class="field ai-input" id="aiInput" rows="4" placeholder="Paste the reply from your AI assistant" spellcheck="false"></textarea>
+        <div class="logo-set">
+          <button class="chip on" id="aiLoad">Load scene</button>
+          <label class="chip" for="aiFile">Upload file…</label>
+          <input type="file" id="aiFile" accept=".json,.txt,application/json,text/plain" hidden />
+          <button class="chip" id="aiSample">Try a sample</button>
+        </div>
+        <p class="hint msg" role="alert" id="aiMsg" hidden></p>
+      </div>
+    </div>
+    <div class="set-group scene-only"><div class="set-l">Time of day</div><div class="chips" data-setting="time" data-options="live:Live,morning:Morning,day:Day,evening:Evening,night:Night"></div></div>
+    <div class="set-group scene-only"><div class="set-l">Weather</div><div class="chips" data-setting="weather" data-options="live:Live,clear:Clear,partly:Partly cloudy,cloudy:Cloudy,fog:Fog,rain:Rain,storm:Storm,snow:Snow"></div></div>
+    <div class="set-group scene-only"><div class="set-l">Season</div><div class="chips" data-setting="season" data-options="live:Live,spring:Spring,summer:Summer,autumn:Autumn,winter:Winter"></div></div>
+    <div class="set-group"><div class="set-l">Graphics</div><div class="chips" data-setting="quality" data-options="auto:Auto,low:Battery saver,high:High"></div></div>
+    <div class="set-group scene-only"><div class="set-l">Camera</div><div class="chips" data-setting="autoRotate" data-options="true:Slow orbit,false:Still"></div></div>
+    <hr />
+    <div class="set-group"><div class="set-l">Your name</div><input class="field" id="setName" placeholder="Name for the greeting" maxlength="30" /></div>
+    <div class="set-group">
+      <div class="set-l">Your logo</div>
+      <div class="logo-set">
+        <span class="logo-prev" id="logoPreview"></span>
+        <label class="chip" for="setLogo">Upload…</label>
+        <input type="file" id="setLogo" accept="image/svg+xml,image/png,image/jpeg,image/webp" hidden />
+        <button class="chip" id="logoReset">Use default</button>
+      </div>
+      <p class="hint" role="alert" id="logoMsg" hidden></p>
+      <div class="chips" data-setting="logoTint" data-options="true:Match theme,false:Original colors"></div>
+    </div>
+    <div class="set-group"><div class="set-l">Search with</div><div class="chips" data-setting="engine" data-options="google:Google,duckduckgo:DuckDuckGo,bing:Bing,youtube:YouTube"></div></div>
+    <div class="set-group two">
+      <div><div class="set-l">Units</div><div class="chips" data-setting="units" data-options="C:°C · km/h,F:°F · mph"></div></div>
+      <div><div class="set-l">Clock</div><div class="chips" data-setting="clock24" data-options="true:24h,false:12h"></div></div>
+    </div>
+    <p class="hint">Drag the island to look around, scroll to zoom. Press <kbd>/</kbd> to search, <kbd>H</kbd> to hide panels.</p>
+    <div class="set-group">
+      <div class="set-l">Your setup</div>
+      <p class="hint">Save your links, logo, photo, tasks and notes to a file, to move them to another computer or keep them safe.</p>
+      <div class="chips">
+        <button class="chip" id="backupSave">Back up</button>
+        <label class="chip" for="backupFile">Restore…</label>
+        <input type="file" id="backupFile" accept="application/json,.json" hidden />
+      </div>
+      <p class="msg" id="backupMsg" hidden></p>
+    </div>
+    <button class="linkish" id="resetLinks">Reset quick links to defaults</button>
+    <button class="linkish" id="showWelcome">Show the welcome steps again</button>
+  </div>
+
+  <div class="welcome glass" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wTitle" hidden>
+    <div class="w-dots" id="wDots" role="img"></div>
+
+    <section data-step>
+      <div class="eyebrow">Welcome to Worldlet</div>
+      <h2 id="wTitle">What should we call you?</h2>
+      <p class="w-lede">Your name goes in the greeting at the top left. You can leave it blank.</p>
+      <input class="field w-input" id="wName" maxlength="30" placeholder="Your first name" autocomplete="given-name" />
+    </section>
+
+    <section data-step hidden>
+      <div class="eyebrow">Live weather</div>
+      <h2>Where are you?</h2>
+      <p class="w-lede">Your world shows the real weather and daylight where you are: rain, snow, fog, sunsets.</p>
+      <button class="chip on w-locate" id="wLocate">Use my location</button>
+      <p class="w-or">or search for your city</p>
+      <input class="field w-input" id="wCity" placeholder="Marrakesh, Lisbon, Tokyo…" autocomplete="off" />
+      <ul class="w-results" id="wCityResults"></ul>
+      <p class="hint msg ok" id="wLocStatus" role="status" hidden></p>
+      <p class="hint w-fine">Your location is only sent to Open-Meteo, the free weather service, to get your forecast. Nothing is collected.</p>
+    </section>
+
+    <section data-step hidden>
+      <div class="eyebrow">Your world</div>
+      <h2>Pick a scene</h2>
+      <p class="w-lede">It changes behind this panel as you choose. You can also use your own photo or an AI-made scene from Settings.</p>
+      <div class="scene-grid" id="wScenes"></div>
+    </section>
+
+    <section data-step hidden>
+      <div class="eyebrow">Quick links</div>
+      <h2>Your favorite sites</h2>
+      <p class="w-lede">Pick the sites you open most. You can add any site later with Edit. <span id="wLinkCount"></span></p>
+      <div class="link-grid" id="wLinks"></div>
+    </section>
+
+    <footer class="w-foot">
+      <button class="linkish" id="wSkip">Skip setup</button>
+      <span class="w-spacer"></span>
+      <button class="chip" id="wBack" hidden>Back</button>
+      <button class="chip on" id="wNext">Continue</button>
+    </footer>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

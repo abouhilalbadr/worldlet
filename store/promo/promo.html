@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Worldlet promo</title>
+<!-- Render with ?size=small (440x280) or ?size=marquee (1400x560). -->
+<style>
+  @font-face { font-family: Nunito; src: url('../../fonts/nunito-latin-wght-normal.woff2') format('woff2'); font-weight: 200 1000; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; overflow: hidden; }
+  body { font-family: Nunito, sans-serif; color: #1b2a3a; }
+  .tile { position: relative; overflow: hidden; background: #f6f1e7 url('island.png') no-repeat; }
+  .tile::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(246, 241, 231, 1) 0%, rgba(246, 241, 231, 1) 34%, rgba(246, 241, 231, 0) 52%); }
+  .copy { position: absolute; display: flex; flex-direction: column; }
+  .brand { display: flex; align-items: center; }
+  .brand svg { flex: none; }
+  .word { letter-spacing: 0.16em; font-weight: 400; }
+  .word b { font-weight: 800; }
+  .line { font-weight: 800; letter-spacing: -0.01em; line-height: 1.12; margin: 0; }
+  .sub { font-weight: 600; color: #4b5c6e; margin: 0; line-height: 1.4; }
+
+  .small { width: 440px; height: 280px; background-size: 440px auto; background-position: 96px 0; }
+  .small .copy { left: 24px; top: 0; bottom: 0; justify-content: center; gap: 12px; width: 200px; }
+  .small .brand { gap: 9px; }
+  .small .brand svg { width: 30px; height: 30px; }
+  .small .word { font-size: 15px; }
+  .small .line { font-size: 24px; }
+
+  .marquee { width: 1400px; height: 560px; background-size: 1200px auto; background-position: 400px -110px; }
+  .marquee .copy { left: 84px; top: 0; bottom: 0; justify-content: center; gap: 22px; width: 600px; }
+  .marquee .brand { gap: 14px; }
+  .marquee .brand svg { width: 46px; height: 46px; }
+  .marquee .word { font-size: 22px; }
+  .marquee .line { font-size: 54px; }
+  .marquee .sub { font-size: 21px; max-width: 470px; }
+</style>
+</head>
+<body>
+<div class="tile" id="tile">
+  <div class="copy">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M3.4 16.2 8.6 10l3 3.4L15.2 8.6l5.4 7.6"/><circle cx="16.6" cy="6.3" r="1.3" fill="currentColor" stroke="none"/></svg>
+      <span class="word"><b>WORLD</b>LET</span>
+    </div>
+    <p class="line">A tiny living world in every new tab</p>
+    <p class="sub" id="sub">Live weather, seasons and day and night, with your links, tasks and notes close at hand.</p>
+  </div>
+</div>
+<script>
+  const size = new URLSearchParams(location.search).get('size') || 'small';
+  document.getElementById('tile').classList.add(size);
+  if (size === 'small') document.getElementById('sub').remove();
+</script>
+</body>
+</html>
