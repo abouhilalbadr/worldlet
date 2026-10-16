@@ -2,11 +2,195 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Worldlet</title>
-<meta http-equiv="refresh" content="0; url=/privacy" />
+<meta name="description" content="A tiny living 3D world in every new tab. Worldlet is a free Chrome extension with live weather, quick links, tasks, notes and a focus timer." />
+<meta name="theme-color" content="#f6f1e7" />
+<link rel="icon" href="assets/icon48.png" />
+<link rel="apple-touch-icon" href="assets/icon128.png" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Worldlet: a tiny living world in every new tab" />
+<meta property="og:description" content="A free Chrome extension that turns your new tab into a little 3D place that follows your real weather, sky and seasons." />
+<meta property="og:url" content="https://worldlet-site.vercel.app/" />
+<meta property="og:image" content="https://worldlet-site.vercel.app/assets/og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preload" href="assets/fonts/nunito-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="site.css" />
+<script type="module" src="site.js"></script>
 </head>
 <body>
-<p><a href="/privacy">Worldlet privacy policy</a></p>
+
+<header class="hero" id="top">
+  <canvas class="hero-canvas" id="world" aria-label="Live Worldlet scene. Drag to look around." role="img"></canvas>
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="#top" aria-label="Worldlet home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M3.4 16.2 8.6 10l3 3.4L15.2 8.6l5.4 7.6"/><circle cx="16.6" cy="6.3" r="1.3" fill="currentColor" stroke="none"/></svg>
+      <span><b>WORLD</b>LET</span>
+    </a>
+    <div class="nav-links">
+      <a href="#scenes">Scenes</a>
+      <a href="#ai">AI scenes</a>
+      <a href="privacy">Privacy</a>
+      <a href="https://github.com/abouhilalbadr/worldlet">GitHub</a>
+    </div>
+    <a class="btn btn-small" href="#get">Get Worldlet</a>
+  </nav>
+
+  <div class="hero-copy glass">
+    <p class="eyebrow">Free Chrome extension</p>
+    <h1>A tiny living world in every new&nbsp;tab</h1>
+    <p class="lede">Worldlet turns your new tab into a little 3D place that follows your real weather, sky and seasons, with your links, tasks and notes close at hand.</p>
+    <div class="cta-row">
+      <a class="btn" href="#get">Get Worldlet</a>
+      <a class="btn btn-ghost" href="#start">See the start page</a>
+    </div>
+    <p class="hint">This is the real thing. Drag to look around, then try the controls.</p>
+  </div>
+
+  <div class="dock glass" role="group" aria-label="Try the scene">
+    <div class="dock-row" role="group" aria-label="Scene">
+      <button data-scene="island" aria-pressed="true">Island</button>
+      <button data-scene="desert" aria-pressed="false">Desert oasis</button>
+      <button data-scene="cabin" aria-pressed="false">Mountain cabin</button>
+      <button data-scene="zen" aria-pressed="false">Zen garden</button>
+      <button data-scene="camp" aria-pressed="false">Lake camp</button>
+    </div>
+    <div class="dock-row dock-small">
+      <div role="group" aria-label="Time of day">
+        <button data-time="morning" aria-pressed="false">Morning</button>
+        <button data-time="day" aria-pressed="true">Day</button>
+        <button data-time="evening" aria-pressed="false">Evening</button>
+        <button data-time="night" aria-pressed="false">Night</button>
+      </div>
+      <div role="group" aria-label="Weather">
+        <button data-weather="clear" aria-pressed="true">Clear</button>
+        <button data-weather="rain" aria-pressed="false">Rain</button>
+        <button data-weather="snow" aria-pressed="false">Snow</button>
+        <button data-weather="storm" aria-pressed="false">Storm</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="band" id="start" aria-labelledby="start-h">
+    <div class="wrap split">
+      <div class="copy">
+        <p class="eyebrow">Your start page</p>
+        <h2 id="start-h">Everything you open a new tab for, around a view you'll enjoy</h2>
+        <ul class="features">
+          <li><strong>Live weather</strong> for your city with a 7-day forecast, drawn into the scene as rain, snow, fog or storms.</li>
+          <li><strong>Quick links</strong> to the sites you use most, with their real logos.</li>
+          <li><strong>Tasks, notes and a focus timer</strong> one click away.</li>
+          <li><strong>Search</strong> with Google, DuckDuckGo, Bing or YouTube.</li>
+          <li><strong>Make it yours</strong> with your name, your own logo and a calm ambient soundscape.</li>
+        </ul>
+      </div>
+      <figure class="frame">
+        <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>New Tab</span></div>
+        <img src="assets/shots/01-island.jpg" width="1280" height="800" alt="Worldlet new tab with the island scene, live weather for Lisbon, quick links and a task list" loading="lazy" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="band band-alt" id="scenes" aria-labelledby="scenes-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Scenes</p>
+        <h2 id="scenes-h">Five little worlds, and room for yours</h2>
+        <p class="lede">Each one keeps time with your day: the sun and moon follow your location, windows glow after dark and trees change with the seasons.</p>
+      </div>
+      <div class="scene-grid">
+        <button class="scene-card" data-load="island"><img src="assets/scenes/island.jpg" alt="" loading="lazy" /><span class="sc-name">Island</span><span class="sc-line">A lighthouse, a windmill and sheep on a green island.</span></button>
+        <button class="scene-card" data-load="desert"><img src="assets/scenes/desert.jpg" alt="" loading="lazy" /><span class="sc-name">Desert oasis</span><span class="sc-line">A kasbah, palm trees and camels around a cool pool.</span></button>
+        <button class="scene-card" data-load="cabin"><img src="assets/scenes/cabin.jpg" alt="" loading="lazy" /><span class="sc-name">Mountain cabin</span><span class="sc-line">Pines, a frozen lake and warm windows when it snows.</span></button>
+        <button class="scene-card" data-load="zen"><img src="assets/scenes/zen.jpg" alt="" loading="lazy" /><span class="sc-name">Zen garden</span><span class="sc-line">Koi under a red bridge, a pagoda and cherry trees.</span></button>
+        <button class="scene-card" data-load="camp"><img src="assets/scenes/camp.jpg" alt="" loading="lazy" /><span class="sc-name">Lake camp</span><span class="sc-line">A jetty, a canoe and a campfire with fireflies at night.</span></button>
+        <div class="scene-card scene-card-plain"><span class="sc-name">Your photo</span><span class="sc-line">Prefer a picture? Use any photo as the background, with blur and dim to keep the page readable.</span></div>
+      </div>
+      <p class="hint center">Pick a scene card to load it in the live view at the top.</p>
+    </div>
+  </section>
+
+  <section class="band" id="ai" aria-labelledby="ai-h">
+    <div class="wrap split split-rev">
+      <div class="copy">
+        <p class="eyebrow">AI scenes</p>
+        <h2 id="ai-h">Describe a place, and your AI assistant builds it</h2>
+        <ol class="steps">
+          <li><strong>Copy the Worldlet prompt</strong> from Settings.</li>
+          <li><strong>Describe your scene</strong> to ChatGPT, Claude or Gemini, like "a Moroccan riad with a fountain and orange trees".</li>
+          <li><strong>Paste the reply</strong> back into Worldlet. It checks the scene and draws it in your sky.</li>
+        </ol>
+        <p class="note">Scenes are plain data that Worldlet checks before drawing, so nothing from the internet ever runs as code. No AI runs on our side either; you use the assistant you already have.</p>
+        <button class="btn" id="loadRiad">Load the riad example above</button>
+        <p class="msg" id="riadMsg" role="status" hidden></p>
+      </div>
+      <pre class="code" aria-label="Part of an AI scene file"><code>{
+  <span class="k">"worldlet"</span>: 1,
+  <span class="k">"name"</span>: <span class="s">"Riad courtyard"</span>,
+  <span class="k">"ground"</span>: { <span class="k">"type"</span>: <span class="s">"plain"</span>, <span class="k">"color"</span>: <span class="s">"#c9a57a"</span> },
+  <span class="k">"objects"</span>: [
+    { <span class="k">"shape"</span>: <span class="s">"cylinder"</span>, <span class="k">"radius"</span>: 1.6,
+      <span class="k">"position"</span>: [0, 0.85, -1], <span class="k">"color"</span>: <span class="s">"#f2ece0"</span> },
+    { <span class="k">"shape"</span>: <span class="s">"sphere"</span>, <span class="k">"radius"</span>: 0.32,
+      <span class="k">"color"</span>: <span class="s">"#7fd0de"</span>,
+      <span class="k">"animate"</span>: { <span class="k">"type"</span>: <span class="s">"bob"</span> } },
+    { <span class="k">"shape"</span>: <span class="s">"pyramid"</span>, <span class="k">"glow"</span>: true,
+      <span class="k">"repeat"</span>: { <span class="k">"pattern"</span>: <span class="s">"ring"</span>, <span class="k">"count"</span>: 6 } }
+  ]
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="band band-alt" id="privacy" aria-labelledby="privacy-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Privacy</p>
+        <h2 id="privacy-h">Private by design</h2>
+      </div>
+      <div class="trio">
+        <div class="point"><h3>No account, no ads, no analytics</h3><p>There is nothing to sign up for and nothing tracking you.</p></div>
+        <div class="point"><h3>Your things stay in your browser</h3><p>Settings, links, tasks and notes are saved in Chrome. The developer never sees them.</p></div>
+        <div class="point"><h3>Weather gets a rough location only</h3><p>Worldlet sends your city's position, rounded to about 1&nbsp;km, to Open-Meteo for the forecast.</p></div>
+      </div>
+      <p class="center"><a class="link" href="privacy">Read the privacy policy</a></p>
+    </div>
+  </section>
+
+  <section class="band" id="get" aria-labelledby="get-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Get Worldlet</p>
+        <h2 id="get-h">Free, for Chrome and other Chromium browsers</h2>
+      </div>
+      <div class="get-grid">
+        <div class="get-card">
+          <span class="pill">Coming soon</span>
+          <h3>Chrome Web Store</h3>
+          <p>Worldlet is on its way to the store. From there it installs in one click and keeps itself up to date.</p>
+        </div>
+        <div class="get-card">
+          <span class="pill pill-ok">Available now</span>
+          <h3>Install from GitHub</h3>
+          <ol class="steps steps-tight">
+            <li><a class="link" href="https://github.com/abouhilalbadr/worldlet/archive/refs/heads/main.zip">Download the code</a> and unzip it.</li>
+            <li>Open <code>chrome://extensions</code> and turn on Developer mode.</li>
+            <li>Choose <strong>Load unpacked</strong>, pick the folder and open a new tab.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-row">
+    <span>© 2026 Worldlet</span>
+    <a href="privacy">Privacy</a>
+    <a href="https://github.com/abouhilalbadr/worldlet">GitHub</a>
+    <span>Weather by <a href="https://open-meteo.com/">Open-Meteo</a></span>
+  </div>
+</footer>
 </body>
 </html>

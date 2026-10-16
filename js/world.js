@@ -115,6 +115,8 @@ export class World {
 
     this.resize();
     window.addEventListener('resize', () => this.resize());
+    // Also follow the canvas itself, for pages where it fills a section rather than the window.
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => this.resize()).observe(canvas);
     this.setQuality('auto');
     renderer.setAnimationLoop(() => this.tick());
   }
@@ -303,7 +305,7 @@ export class World {
   }
 
   resize() {
-    const w = window.innerWidth, h = window.innerHeight;
+    const w = this.canvas.clientWidth || window.innerWidth, h = this.canvas.clientHeight || window.innerHeight;
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
     // keep the set framed on narrow screens
