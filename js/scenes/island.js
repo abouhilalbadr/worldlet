@@ -352,7 +352,8 @@ export function build(ctx) {
     m.castShadow = true;
     group.add(m);
   }
-  for (const [a, d, s] of [[2.3, 26, 1.4], [3.5, 34, 2.0], [0.9, 40, 1.6], [5.0, 30, 1.1]]) {
+  // Islets sit beyond the camera's orbit (radius ~46) so they read as distant land and never fill the lens.
+  for (const [a, d, s] of [[2.3, 62, 2.2], [3.5, 66, 2.6], [0.9, 72, 2.4], [5.0, 68, 2.0]]) {
     const g = new THREE.Group();
     const b = new THREE.Mesh(new THREE.CylinderGeometry(1.6 * s, 1.8 * s, 0.3, 12), sand);
     const gr = new THREE.Mesh(new THREE.CylinderGeometry(1.0 * s, 1.2 * s, 0.4, 10), ctx.grassMat);
