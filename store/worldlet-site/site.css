@@ -69,8 +69,8 @@ code { font: 500 0.88em var(--mono); background: var(--amber-soft); padding: 1px
 .nav-links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
 
 /* The headline runs wide across the sky; the scene is framed lower so the two never overlap. */
-.hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 58%; z-index: -1; pointer-events: none; background: linear-gradient(rgba(246, 241, 231, 0.5), rgba(246, 241, 231, 0)); }
-.hero.night::before { background: linear-gradient(rgba(10, 16, 32, 0.55), rgba(10, 16, 32, 0)); }
+.hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 62%; z-index: 0; pointer-events: none; background: linear-gradient(rgba(246, 241, 231, 0.86) 30%, rgba(246, 241, 231, 0)); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); -webkit-mask-image: linear-gradient(#000 45%, transparent); mask-image: linear-gradient(#000 45%, transparent); }
+.hero.night::before { background: linear-gradient(rgba(10, 16, 32, 0.8) 30%, rgba(10, 16, 32, 0)); }
 .hero-copy { position: absolute; left: 0; right: 0; top: clamp(96px, 13svh, 150px); margin: 0 auto; width: min(1240px, calc(100% - 2 * var(--gutter))); display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); column-gap: clamp(32px, 5vw, 80px); row-gap: 14px; align-items: end; pointer-events: none; }
 .hero-copy > * { pointer-events: auto; }
 .hero-title { display: grid; gap: 14px; }
@@ -100,7 +100,7 @@ code { font: 500 0.88em var(--mono); background: var(--amber-soft); padding: 1px
 .dock-label output { opacity: 1; color: #a8641a; }
 .hero.night .dock-label output { color: #f4c47f; }
 .sun-track { display: flex; align-items: center; gap: 8px; }
-.sun-track svg, .dock-weather svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sun-track svg, .dock-weather svg, .dock-spin svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .sun-track svg:first-child { color: #c97f25; }
 #sunRange { flex: 1; min-width: 0; height: 22px; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; cursor: pointer; }
 #sunRange::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, #f6c98a, #8cc4e8 33%, #f08a4b 66%, #1b2a4a); }
@@ -111,9 +111,9 @@ code { font: 500 0.88em var(--mono); background: var(--amber-soft); padding: 1px
 .sun-stops button { font-size: 11px; font-weight: 700; opacity: 0.6; padding: 2px 0; }
 .sun-stops button:hover, .sun-stops button.near { opacity: 1; }
 
-.dock-weather button { display: grid; justify-items: center; gap: 3px; min-width: 50px; padding: 8px 4px 6px; border-radius: 12px; font-size: 11.5px; font-weight: 800; opacity: 0.75; }
-.dock-weather svg { width: 22px; height: 22px; }
-.dock-weather button:hover { opacity: 1; background: rgba(127, 127, 127, 0.14); }
+.dock-spin button, .dock-weather button { display: grid; justify-items: center; gap: 3px; min-width: 50px; padding: 8px 4px 6px; border-radius: 12px; font-size: 11.5px; font-weight: 800; opacity: 0.75; }
+.dock-weather svg, .dock-spin svg { width: 22px; height: 22px; }
+.dock-spin button:hover, .dock-weather button:hover { opacity: 1; background: rgba(127, 127, 127, 0.14); }
 .dock-weather button[aria-pressed="true"] { opacity: 1; background: #1b2a3a; color: #fff; }
 .hero.night .dock-weather button[aria-pressed="true"] { background: #f4c47f; color: #1a2232; }
 
@@ -215,13 +215,17 @@ button.scene-card:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var
   .toc { position: static; }
 }
 
+.dock-spin .icon-play { display: none; }
+.dock-spin button[aria-pressed="false"] .icon-pause { display: none; }
+.dock-spin button[aria-pressed="false"] .icon-play { display: block; }
+
 /* Mid-size screens: smaller pictures so the controls stay on one row below the scene. */
 @media (min-width: 901px) and (max-width: 1180px) {
   .dock-scenes img { width: 54px; height: 38px; }
   .dock-time { width: 200px; }
   .sun-stops { padding: 0; }
   .sun-stops button { font-size: 10.5px; }
-  .dock-weather button { min-width: 44px; }
+  .dock-weather button, .dock-spin button { min-width: 44px; }
 }
 
 /* ---------- small screens ---------- */
@@ -243,6 +247,7 @@ button.scene-card:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var
   .dock-time { width: auto; }
   .dock-weather { justify-content: space-between; }
   .dock-weather button { flex: 1; }
+  .dock-spin { justify-content: center; }
   .split, .split-rev { grid-template-columns: minmax(0, 1fr); }
   .scene-grid, .trio, .get-grid { grid-template-columns: minmax(0, 1fr); }
   .scene-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

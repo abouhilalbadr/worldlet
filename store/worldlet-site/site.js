@@ -60,6 +60,14 @@ function applyEnv(instant = false) {
   world.setSeason(state.weather === 'snow' ? 'winter' : seasonNow());
 }
 
+const spinBtn = document.getElementById('spinBtn');
+function setSpin(on) {
+  spinBtn.setAttribute('aria-pressed', String(on));
+  spinBtn.querySelector('span').textContent = on ? 'Pause' : 'Rotate';
+  if (world) world.setAutoRotate(on);
+}
+spinBtn.addEventListener('click', () => setSpin(spinBtn.getAttribute('aria-pressed') !== 'true'));
+
 async function loadScene(name, data = null) {
   state.scene = name;
   press('scene', name);
@@ -88,7 +96,7 @@ async function start() {
   const coarse = matchMedia('(pointer: coarse)');
 
   world.setQuality(small.matches ? 'low' : 'auto');
-  world.setAutoRotate(!reduced.matches);
+  setSpin(!reduced.matches);
   // The page should scroll, not zoom, when the wheel or a finger passes over the hero.
   world.controls.enableZoom = false;
   if (coarse.matches) {
